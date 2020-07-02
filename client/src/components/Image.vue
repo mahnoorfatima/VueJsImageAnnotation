@@ -37,25 +37,17 @@ export default {
   },
   methods: {
 	downloadImage() {
-		console.log('---------download---------');
-		console.log('---------document.querySelector("#capture")---------', document.querySelector("#capture"));
+		 document.querySelector("#capture"));
 		html2canvas(document.querySelector("#capture"))
 		.then(canvas => {
-			console.log('---------canvas---------', canvas);
 		  document.body.appendChild(canvas)
 		  var link = document.createElement('a');
         if (typeof link.download === 'string') {
           link.href = canvas.toDataURL();
           link.download = 'canvas.png';
-
-          //Firefox requires the link to be in the body
           document.body.appendChild(link);
-
-          //simulate click
           link.click();
-
-          //remove the link when done
-          document.body.removeChild(link);
+		  document.body.removeChild(link);
         } else {
           window.open(canvas.toDataURL());
         }
