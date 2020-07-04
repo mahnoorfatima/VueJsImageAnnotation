@@ -21,7 +21,6 @@ export default {
 		},
 		change() {
 			this.toggle();
-			console.log('------------------>',this.selected);
 			this.$emit('edit', {label: this.selected});
 		}
 	}

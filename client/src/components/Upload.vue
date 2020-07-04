@@ -7,7 +7,7 @@
       </div>
       <div class="form-group">
         <label>Image</label>
-        <input type="file" class="form-control" @change="handleUpload($event.target.files)" name="avatar" />
+        <input type="file" class="form-control" @change="handleUpload($event.target.files)" accept="image/x-png,image/jpeg" />
       </div>
       <div class="form-group">
         <label>Description</label>

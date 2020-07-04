@@ -3,20 +3,24 @@ var _ = require('lodash');
 const db = require("../models");
 const Annotations = db.image_annotation;
 const createAnnotations = async (req, res) => {
-    console.log('----------------', req.body);
   try {
       let promises = [];
-      var annotations = req.body.annotations;
+      let annotations = req.body.annotations;
+     let filterarray =  _.filter(annotations, (item) => {
+          return !item.imageId;
+      });
       let image_id = req.body.id;
-      _.forEach(annotations , (annotation) => {
+      _.forEach(filterarray , (annotation) => {
         promises.push(
             Annotations.create({
-                fk_image_id: image_id,
+                imageId: image_id,
                 x: annotation.x,
                 y: annotation.y,
                 width: annotation.width,
                 height: annotation.height,
-                status: annotation.status
+                label: annotation.label,
+                status: annotation.status,
+                i_is_archived: 0
             }));
         });
         Promise.all(promises);
@@ -26,6 +30,53 @@ const createAnnotations = async (req, res) => {
   }
 };
 
+const deleteAnnotations = async (req, res) => {
+  try {
+      let annotation = req.body.item;
+      Annotations.findOne({
+        where: {
+          id : annotation.id,
+          imageId: annotation.imageId
+
+        }
+      }).then((annotation) => {
+        annotation.update({
+          i_is_archived: 1
+        })
+      });
+  } catch (error) {
+    console.log(error);
+    return res.send(`${error}`);
+  }
+};
+
+const updateAnnotations = async (req, res) => {
+  try {
+    console.log('---------------------update', req.body.item )
+      let annotation = req.body.item;
+      Annotations.findOne({
+        where: {
+          id : annotation.id,
+          imageId: annotation.imageId
+
+        }
+      }).then((item) => {
+        item.update({
+                x: annotation.x,
+                y: annotation.y,
+                width: annotation.width,
+                height: annotation.height,
+                label: annotation.label,
+                status: annotation.status,
+        })
+      });
+  } catch (error) {
+    console.log(error);
+    return res.send(`${error}`);
+  }
+};
 module.exports = {
     createAnnotations,
+    deleteAnnotations,
+    updateAnnotations
 };

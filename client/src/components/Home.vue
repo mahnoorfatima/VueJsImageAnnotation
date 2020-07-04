@@ -5,6 +5,7 @@
         <upload @submit="handleSubmit"></upload>
       </vodal>
       <gallery-list :images="images"></gallery-list>
+          <span v-show="spin" class="glyphicon glyphicon-repeat fast-right-spinner"></span>
     </div>
 </template>
 
@@ -42,7 +43,7 @@ export default {
       this.show = false;
       this.spin = true
       const formData = new FormData()
-      formData.append('image', model.imageFile);
+      formData.append('file', model.imageFile);
       formData.append('title', model.title);
       formData.append('description', model.description);
        const config = {

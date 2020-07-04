@@ -5,9 +5,6 @@
       <img :src="image.v_image_url" class="img-responsive"/>
     </div> 
     <p class="card-description">{{image.description}}</p> 
-     <vodal :show="show" animation="zoom" @hide="show = false">
-
-      </vodal>
       </div>
 </template>
 
@@ -28,6 +25,13 @@ export default {
     showAnnotationModal() {
       this.show = true
     }
+  },
+    created() {
+      if(this.image.image_annotations){
+        this.image.image_annotations = this.image.image_annotations.filter(function(item){
+          return item.i_is_archived != 1;
+        })
+      }
   }
 }
 </script>

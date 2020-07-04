@@ -1,51 +1,39 @@
 'use strict';
 module.exports = (sequelize, DataTypes) => {
-    var imageAnnotation = sequelize.define('image_annotation', {
+    var ImageAnnotation = sequelize.define('image_annotation', {
         id: {
             type: DataTypes.INTEGER,
             primaryKey: true,
             autoIncrement: true
             }, 
-        fk_image_id: {
+        imageId: {
             type: DataTypes.INTEGER,
            allowNull: false
         },
         x: {
-          type: DataTypes.STRING,
+          type: DataTypes.FLOAT,
         },
         y: {
-          type: DataTypes.STRING,
+          type: DataTypes.FLOAT,
         },
         width: {
-            type: DataTypes.STRING,
+            type: DataTypes.INTEGER,
         },
         height: {
-            type: DataTypes.STRING,
+            type: DataTypes.INTEGER,
         }, 
+        label: {
+            type: DataTypes.STRING,
+        },
+        status: {
+            type: DataTypes.STRING,
+        },
+        i_is_archived: {
+            type: DataTypes.INTEGER,
+            allowNull: false},
         i_created_by_id: DataTypes.INTEGER,
         i_updated_by_id: DataTypes.INTEGER,
         i_created_at: DataTypes.INTEGER },
-        {
-            classMethods: {
-                createImage: async (data, transaction) => {
-                    let currentdate = moment().unix();
-                    return this.create({
-                        v_image_url: data.imageUrl,
-                        type: data.type,
-                        name: data.name,
-                        file: data.file,
-                        i_created_by_id: data.userId,
-                        i_created_at: currentdate
-                    }, {transaction: transaction});
-                },
-                getAllImagesMetaData: async (userId, transaction) => {
-                    return this.findAll({
-                        where: {
-                        i_created_by_id: userId
-                        }
-                    }, {transaction: transaction});
-                }
-        }
-    });
-    return imageAnnotation;
+      );
+    return ImageAnnotation;
   };

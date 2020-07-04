@@ -11,6 +11,7 @@
 import Annotation from './Annotation.vue'
 import Outline from './Outline.vue'
 import {randomId} from './utils'
+import axios from 'axios';
 
 export default {
 	props: {
@@ -55,19 +56,31 @@ export default {
 			this.lock = true;
 		},
 		labeledUpdate: function(msg) {
+			let updatedAnnotation;
 			this.lock = false;
 			if (!msg) return;
 			for (var i = 0; i < this.annotations.length; i++) {
 				if (this.annotations[i].id == msg.id) {
 					this.annotations[i].label = msg.label;
 					this.annotations[i].status = 'labeled';
+					updatedAnnotation = this.annotations[i];
 				}
+			}
+			if(updatedAnnotation.imageId){
+				this.updateItem(updatedAnnotation)
 			}
 		},
 		remove: function(msg) {
+			let item;
 			this.annotations = this.annotations.filter(function(annotation){
+				if(annotation.id == msg.id) {
+					item = annotation	
+				}
 				return annotation.id != msg.id;
 			});
+			if(item.imageId){
+				this.deleteItem(item);
+			}
 			this.lock = false;
 		},
 		toEdit: function(msg) {
@@ -76,7 +89,35 @@ export default {
 					this.annotations[i].status = 'edit';
 				}
 			}
+		},
+		deleteItem: function(item) {
+		const config = {
+			headers: {
+			"Content-Type": "application/json",
+				"Accept": "application/json",
+				"type": "formData"
+			}
+			
 		}
+			axios.post('http://localhost:3000/delete-annotation', {item: item}, config)
+			.then(({data}) => {
+				this.spin = false
+			})
+			},
+		updateItem: function(item) {
+		const config = {
+			headers: {
+			"Content-Type": "application/json",
+				"Accept": "application/json",
+				"type": "formData"
+			}
+			
+		}
+			axios.post('http://localhost:3000/update-annotation', {item: item}, config)
+			.then(({data}) => {
+				this.spin = false
+			})
+			}
 	},
 	components: { Annotation, Outline }
 };

@@ -1,13 +1,10 @@
 <template>
 <div class="annotation_container">
-	      <h3 class="text-center">Save Annotations to Database <button class="btn btn-info" @click="handleSubmit"><span class="glyphicon glyphicon-save"></span></button></h3>
-<div >
-<annotatable :annotations.sync="annotations"  input="input-menu" >
-	<slot>Drag to draw box</slot>
-     <img class="thumbnail" :src="item.v_image_url" id="capture"/>
-
-</annotatable>
-</div>
+	<h3 class="text-center">Save Annotations to Database <button class="btn btn-info" @click="handleSubmit"><span class="glyphicon glyphicon-save"></span></button></h3>
+   <annotatable :annotations.sync="annotations"  input="input-menu" >
+	    <slot>Drag to draw box</slot>
+         <img class="thumbnail" :src="item.v_image_url" id="capture"/>
+     </annotatable>
 </div>
 </template>
 
@@ -18,17 +15,8 @@ import axios from 'axios';
 export default {
       data () {
     return {
-      annotations: [
-				{
-					id: '12345678',
-					x: 285,
-					y: 54,
-					width: 112,
-					height: 188,
-					label: 'default',
-					status: 'labeled'
-				}
-			]
+      annotations: this.item.image_annotations,
+      spin: true
     }
   },
   props: ['item'],
@@ -37,23 +25,6 @@ export default {
   },
   methods: {
 	downloadImage() {
-		 document.querySelector("#capture"));
-		html2canvas(document.querySelector("#capture"))
-		.then(canvas => {
-		  document.body.appendChild(canvas)
-		  var link = document.createElement('a');
-        if (typeof link.download === 'string') {
-          link.href = canvas.toDataURL();
-          link.download = 'canvas.png';
-          document.body.appendChild(link);
-          link.click();
-		  document.body.removeChild(link);
-        } else {
-          window.open(canvas.toDataURL());
-        }
-      }).catch((error) => {
-        console.log("Erorr", error)
-      });
 	},
 	handleSubmit() {
        const config = {

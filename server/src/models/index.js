@@ -22,9 +22,6 @@ db.sequelize = sequelize;
 db.images = require("./image.js")(sequelize, Sequelize);
 db.image_annotation =  require("./image_annotation.js")(sequelize, Sequelize);
 
-db.images.hasMany(db.image_annotation, { as: "annotations" }, {
-  foreignKey: 'id'
-});
-db.image_annotation.belongsTo(db.images, {
-  foreignKey: "id"});
+db.image_annotation.belongsTo(db.images);
+db.images.hasMany(db.image_annotation);
 module.exports = db;

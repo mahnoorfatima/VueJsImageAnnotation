@@ -14,38 +14,15 @@ module.exports = (sequelize, DataTypes) => {
         type: {
           type: DataTypes.STRING,
         },
-        name: {
+        title: {
           type: DataTypes.STRING,
         },
-        file: {
-          type: DataTypes.BLOB("long"),
-        },
+        description: {
+            type: DataTypes.STRING,
+          },
         i_created_by_id: DataTypes.INTEGER,
         i_updated_by_id: DataTypes.INTEGER,
-        i_created_at: DataTypes.INTEGER },
-        {
-            classMethods: {
-                createImage: async (data, transaction) => {
-                    let currentdate = moment().unix();
-                    return this.create({
-                        v_image_url: data.imageUrl,
-                        type: data.type,
-                        name: data.name,
-                        file: data.file,
-                        i_created_by_id: data.userId,
-                        i_created_at: currentdate
-                    }, {transaction: transaction});
-                },
-                getAllImagesMetaData: async (userId, transaction) => {
-                    return this.findAll({
-                        where: {
-                        i_created_by_id: userId
-                        }
-                    }, {transaction: transaction});
-                }
-        }
-    });
-
-
+        i_created_at: DataTypes.INTEGER }
+      );
     return Image;
   };
