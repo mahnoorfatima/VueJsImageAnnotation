@@ -23,7 +23,11 @@ const createAnnotations = async (req, res) => {
                 i_is_archived: 0
             }));
         });
-        Promise.all(promises);
+        Promise.all(promises).then(() => {
+          return res.send('Annotation saved!');
+
+        });
+
   } catch (error) {
     console.log(error);
     return res.send(`${error}`);
@@ -43,6 +47,8 @@ const deleteAnnotations = async (req, res) => {
         annotation.update({
           i_is_archived: 1
         })
+      }).then(() => {
+        return res.send('Annotation deleted!');
       });
   } catch (error) {
     console.log(error);
@@ -69,6 +75,8 @@ const updateAnnotations = async (req, res) => {
                 label: annotation.label,
                 status: annotation.status,
         })
+      }).then(() => {
+        return res.send('Annotation updated!');
       });
   } catch (error) {
     console.log(error);

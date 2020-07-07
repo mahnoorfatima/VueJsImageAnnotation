@@ -1,5 +1,5 @@
 <template>
-  <div class="card" @click="$router.push({name: 'detail', params: { item: image}})">
+  <div class="card" @click="$router.push({name: 'image-details', params: { item: image}})">
     <h4 class="card-title">{{image.title}}</h4>
     <div class="card-image">
       <img :src="image.v_image_url" class="img-responsive"/>
@@ -9,7 +9,6 @@
 </template>
 
 <script>
-import ImageModel from './Image.vue'
 
 export default {
     data () {
@@ -19,7 +18,6 @@ export default {
   },
   props: ['image'],
    components: {
-    'image-model': ImageModel
   },
   methods: {
     showAnnotationModal() {

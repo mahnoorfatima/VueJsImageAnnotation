@@ -41,10 +41,10 @@ export default {
 		labeled: function(e) {
 			this.$emit('labeled', {id: this.id, label: e.target.value});
 		},
-		close: function(e) {
+		close: function() {
 			this.$emit('remove', {id: this.id});
 		},
-		toEdit: function(e) {
+		toEdit: function() {
 			this.$emit('toEdit', {id: this.id});
 		},
 		editLabel: function(msg) {

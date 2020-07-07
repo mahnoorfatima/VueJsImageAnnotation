@@ -1,11 +1,11 @@
 <template>
     <div class="container">
       <h3 class="text-center">Image Gallery <button class="btn btn-info" @click="showModal"><span class="glyphicon glyphicon-upload"></span></button></h3>
+              <spinner v-show="spin" :size="50"></spinner>
       <vodal :show="show" animation="zoom" @hide="show = false">
         <upload @submit="handleSubmit"></upload>
       </vodal>
       <gallery-list :images="images"></gallery-list>
-          <span v-show="spin" class="glyphicon glyphicon-repeat fast-right-spinner"></span>
     </div>
 </template>
 
@@ -13,6 +13,7 @@
 <script>
 import Upload from './Upload.vue';
 import GalleryList from './GalleryList.vue';
+import Spinner from 'vue-spinner-component/src/Spinner.vue';
 import axios from 'axios';
 export default {
   name: 'app',
@@ -26,7 +27,7 @@ export default {
   },
    created() {
     this.spin = true;
-    axios.get('http://localhost:3000/')
+    axios.get('http://localhost:8082/get-data')
       .then(({data}) => {    
         this.spin = false
         this.images = data.map(image => {
@@ -53,15 +54,18 @@ export default {
             "type": "formData"
         }
     }
-      axios.post('http://localhost:3000/upload', formData, config)
-      .then(({data}) => {
-        this.spin = false
+      axios.post('http://localhost:8082/upload', formData, config)
+      .then(() => {
+        this.spin = false;
+        location.reload();
+
       })
     }
   },
    components: {
     'gallery-list': GalleryList,
-    'upload': Upload
+    'upload': Upload,
+    Spinner
   }
 }
 </script>

@@ -1,7 +1,8 @@
 <template id="annotatable-template">
 	<div class="annotatable" v-on:mousedown="beginDraw" v-on:mousemove="drawing" v-on:mouseup="drawn">
+		<spinner v-show="spin" :size="50"></spinner>
 		<slot></slot>
-		<annotation v-for="annotation in annotations" :props="annotation" :input="input" @labeled="labeledUpdate" @remove="remove" @toEdit="toEdit">
+		<annotation v-for="annotation in annotations" :key="annotation.id" :props="annotation" :input="input" @labeled="labeledUpdate" @remove="remove" @toEdit="toEdit">
 		</annotation>
 		<outline v-if="newAnnotationDrawing" :props="newAnnotation"></outline>
 	</div>
@@ -10,6 +11,7 @@
 <script>
 import Annotation from './Annotation.vue'
 import Outline from './Outline.vue'
+import Spinner from 'vue-spinner-component/src/Spinner.vue';
 import {randomId} from './utils'
 import axios from 'axios';
 
@@ -24,7 +26,8 @@ export default {
 			newAnnotation: null,
 			newAnnotationDrawing: false,
 			lock: false,
-			position: null
+			position: null,
+			spin: false
 		}
 	},
 	methods: {
@@ -44,7 +47,7 @@ export default {
 			this.newAnnotation.width = e.clientX - this.newAnnotation.x - this.position.left;
 			this.newAnnotation.height = e.clientY - this.newAnnotation.y - this.position.top;
 		},
-		drawn: function(e) {
+		drawn: function() {
 			if (this.lock) return;
 			if(this.newAnnotation.width<3 || this.newAnnotation.height<3) {
 				this.newAnnotationDrawing = false;
@@ -91,20 +94,21 @@ export default {
 			}
 		},
 		deleteItem: function(item) {
+		this.spin = true;
 		const config = {
 			headers: {
 			"Content-Type": "application/json",
 				"Accept": "application/json",
 				"type": "formData"
 			}
-			
-		}
-			axios.post('http://localhost:3000/delete-annotation', {item: item}, config)
-			.then(({data}) => {
+		};
+		axios.post('https://webapplication-282411.el.r.appspot.com/delete-annotation', {item: item}, config)
+			.then(() => {
 				this.spin = false
-			})
+			});
 			},
 		updateItem: function(item) {
+		this.spin = true;
 		const config = {
 			headers: {
 			"Content-Type": "application/json",
@@ -113,13 +117,13 @@ export default {
 			}
 			
 		}
-			axios.post('http://localhost:3000/update-annotation', {item: item}, config)
-			.then(({data}) => {
+			axios.post('https://webapplication-282411.el.r.appspot.com/update-annotation', {item: item}, config)
+			.then(() => {
 				this.spin = false
 			})
 			}
 	},
-	components: { Annotation, Outline }
+	components: { Annotation, Outline, Spinner }
 };
 </script>
 

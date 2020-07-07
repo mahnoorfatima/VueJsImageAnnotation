@@ -1,12 +1,25 @@
 <template>
   <div id="app">
-    <div class="container">
-          <router-view></router-view>
-      <!-- <h3 class="text-center">Image Gallery <button class="btn btn-info" @click="showModal"><span class="glyphicon glyphicon-upload"></span></button></h3>
-      <vodal :show="show" animation="zoom" @hide="show = false">
-        <upload @submit="handleSubmit"></upload>
-      </vodal>
-      <gallery-list :images="images"></gallery-list> -->
-    </div>
+     <router-view></router-view>
   </div>
 </template>
+
+<script>
+
+export default {
+  name: 'App',
+  components: {
+  }
+}
+</script>
+
+<style>
+#app {
+  font-family: Avenir, Helvetica, Arial, sans-serif;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+  text-align: center;
+  color: #2c3e50;
+  margin-top: 60px;
+}
+</style>

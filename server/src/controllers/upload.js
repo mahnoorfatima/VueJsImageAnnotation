@@ -3,15 +3,11 @@ const {Storage} = require('@google-cloud/storage');
 const db = require("../models");
 const {format} = require('util');
 const Image = db.images;
-const storage = new Storage({
-  projectId: 'rich-involution-240817',
-  keyFilename: '/keyfile.json'
-});
-const bucket = storage.bucket("rich-involution-240817.appspot.com");
+const storage = new Storage();
+const bucket = storage.bucket("webapplication-282411.appspot.com");
 
 const uploadFiles = async (req, res) => {
   try {
-
     if (req.file == undefined) {
       return res.send(`You must select a file.`);
     }
@@ -72,6 +68,7 @@ const uploadImageToStorage = (file) => {
     });
 
     blobStream.on('error', (error) => {
+      console.log('----------------', error)
       reject('Something is wrong! Unable to upload at the moment.');
     });
 

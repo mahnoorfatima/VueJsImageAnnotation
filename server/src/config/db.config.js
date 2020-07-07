@@ -3,12 +3,17 @@ module.exports = {
   USER: "root",
   PASSWORD: "123canon!",
   DB: "database_dev",
-  port: 3306,
   dialect: "mysql",
-  pool: {
-    max: 5,
-    min: 0,
-    acquire: 30000,
-    idle: 10000
-  }
+  timestamps: false,
 };
+
+
+/**
+ * Google Cloud Configuration
+ *  HOST: "/cloudsql/webapplication-282411:us-central1:databaseprod",
+  USER: "root",
+  PASSWORD: "",
+  DB: "prod_database",
+  dialect: "mysql",
+  timestamps: false,
+ */

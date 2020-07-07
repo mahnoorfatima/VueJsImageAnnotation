@@ -3,15 +3,17 @@ const dbConfig = require("../config/db.config.js");
 const Sequelize = require("sequelize");
 const sequelize = new Sequelize(dbConfig.DB, dbConfig.USER, dbConfig.PASSWORD, {
   host: dbConfig.HOST,
-  dialect: dbConfig.dialect,
-  operatorsAliases: false,
-
-  pool: {
-    max: dbConfig.pool.max,
-    min: dbConfig.pool.min,
-    acquire: dbConfig.pool.acquire,
-    idle: dbConfig.pool.idle,
-  },
+  dialect: dbConfig.dialect, pool: {
+    max: 5,
+    min: 0,
+    acquire: 30000,
+    idle: 10000
+},
+// dialectOptions: {
+//   socketPath: '/cloudsql/webapplication-282411:us-central1:databaseprod'
+// },
+logging: false,
+operatorsAliases: false
 });
 
 const db = {};
